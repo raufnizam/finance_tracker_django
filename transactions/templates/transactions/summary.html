@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Summary</title>
+</head>
+<body>
+    <h1>Transaction Summary</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Get Summary</button>
+    </form>
+    {% if summary %}
+        <p>Total Income: ${{ summary.total_income }}</p>
+        <p>Total Expense: ${{ summary.total_expense }}</p>
+        <p>Net Saving: ${{ summary.net_saving }}</p>
+        {% if plot_image %}
+            <img src="data:image/png;base64,{{ plot_image }}" alt="Summary Plot">
+        {% endif %}
+    {% else %}
+        <p>No transactions available for summary.</p>
+    {% endif %}
+    <a href="{% url 'transactions' %}">Back to Transactions</a>
+</body>
+</html>

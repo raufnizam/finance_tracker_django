@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+</head>
+<body>
+    <h1>Transactions</h1>
+    {% if line_plot_image %}
+        <img src="data:image/png;base64,{{ line_plot_image }}" alt="Transactions Plot">
+    {% else %}
+        <p>No transactions available to plot.</p>
+    {% endif %}
+    
+    {% if pie_chart_image %}
+        <img src="data:image/png;base64,{{ pie_chart_image }}" alt="Income and Expense Pie Chart">
+    {% else %}
+        <p>No data available for pie chart.</p>
+    {% endif %}
+
+    <h2>All Transactions</h2>
+    <ul>
+        {% for transaction in transactions %}
+            <li>
+                {{ transaction.date }} - {{ transaction.category }}: ${{ transaction.amount }} ({{ transaction.description }})
+                <a href="{% url 'edit_transaction' transaction.pk %}">Edit</a>
+                <a href="{% url 'delete_transaction' transaction.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_transaction' %}">Add Transaction</a>
+    <a href="{% url 'transaction_summary' %}">Summary</a>
+    {% if transactions %}
+        <a href="{% url 'download_csv' %}">Download CSV</a>  <!-- Add this line -->
+    {% endif %}
+</body>
+</html>
